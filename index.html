@@ -18,35 +18,52 @@
 <body>
 <h1>Template for Embedding Vega-Lite Visualization</h1>
 <!-- Container for the visualization -->
-<div id="vis"></div>
+<div id="vis1"></div>
 <div id="vis2"></div>
 
 <script>
 // Assign the specification to a local variable vlSpec.
-var vlSpec = {
-    $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
-    data: {
-        values: [
-        {a: 'C', b: 2},
-        {a: 'C', b: 7},
-        {a: 'C', b: 4},
-        {a: 'D', b: 1},
-        {a: 'D', b: 2},
-        {a: 'D', b: 6},
-        {a: 'E', b: 8},
-        {a: 'E', b: 4},
-        {a: 'E', b: 7}
-        ]
+var vlSpec1 = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "title": "Univariate-Heatmap",
+    "data": {
+        "url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"
     },
-    mark: 'bar',
-    encoding: {
-        y: {field: 'a', type: 'nominal'},
-        x: {
-            aggregate: 'average',
-            field: 'b',
-            type: 'quantitative',
-            axis: {
-                title: 'Average of b'
+    "width": 1000,
+    "height": 500,
+    "selection": {
+        "1":{
+            "type": "single",
+            "fields": ["Gender"],
+            "bind" : {
+                "input": "select", "options": [
+                null, "Male", "Female"
+                ]
+            }
+        }
+    },
+    "transform": [
+    {"filter": {"selection": "1"}}
+    ],
+    "title": "Ratings Given on the Basis of Location",
+    "mark": "rect",
+    "encoding": {
+        "y": {
+            "field": "Rating",
+            "type": "quantitative",
+            "title": "Rating"
+        },
+        "x": {
+            "field": "Location",
+            "type": "nominal",
+            "title": "Location"
+        },
+        "color": {
+            "field": "Rating",
+            "aggregate": "count",
+            "type": "quantitative",
+            "legend": {
+                "title": null
             }
         }
     }
@@ -54,38 +71,220 @@ var vlSpec = {
 
 
 var vlSpec2 = {
-    $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
-    data: {
-        values: [
-        {a: 'C', b: 2},
-        {a: 'C', b: 7},
-        {a: 'C', b: 4},
-        {a: 'D', b: 1},
-        {a: 'D', b: 2},
-        {a: 'D', b: 6},
-        {a: 'E', b: 8},
-        {a: 'E', b: 4},
-        {a: 'E', b: 7}
-        ]
-    },
-    mark: 'bar',
-    encoding: {
-        y: {field: 'a', type: 'nominal'},
-        x: {
-            aggregate: 'average',
-            field: 'b',
-            type: 'quantitative',
-            axis: {
-                title: 'Average of b'
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "title": "Bivariate-Area",
+    "width": 1000,
+    "height": 500,
+    "data": {"url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"},
+    "selection": {
+        
+        "1": {
+            "type": "single",
+            "fields": ["Age", "Gender"],
+            "bind":{
+                "Age": {"input": "select",
+                    "options": [null, "18-29", "30-44", "45-60", "> 60"]},
+                "Gender": {
+                    "input": "select",
+                    "options": [null, "Male", "Female"]
+                }
             }
+            
         }
+        
+    },
+    
+    
+    
+    "mark": "area",
+    "transform": [
+    {"filter": {"selection": "1"}}
+    ],
+    "encoding": {
+        "y": {
+            "field": "Household Income",
+            "type": "nominal"
+        },
+        "x": {
+            "aggregate": "median",
+            "field": "Rating",
+            "type": "quantitative",
+            "axis": null,
+            "stack": "center"
+        },
+        "color": {"field":"Location",
+            "type":"nominal",
+            "scale":{"scheme": "category20b"}}
     }
 };
 
 
+
+var vlSpec3 = {
+    "data": {"url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"},
+    "title" : "Bi-Variate: Circle",
+    "height": 500,
+    "width": 1000,
+    "selection": {
+        "1": {
+            "type": "single",
+            "fields": ["Cuisine Knowledge", "Household Income"],
+            "bind": {
+                "Cuisine Knowledge":{"input": "select",
+                    "options": [null, "Novice", "Intermediate", "Advanced", "Expert"]},
+                "Household Income" : {"input": "select",
+                    "options": [null, "$0 - $24,999", "$25,000 - $49,999", "$50,000 - $99,999",
+                    "$100,000 - $149,999", "$150,000+"]}
+            }
+        }
+    },
+    "transform": [
+    {"filter": {"selection": "1"}}
+    ],
+    "mark": {
+        "type": "circle",
+        "opacity": 0.7,
+        "stroke": "black",
+        "strokeWidth": 1
+    },
+    "encoding": {
+        "x": {"field": "Country", "type": "nominal"},
+        "y": {"field": "Rating", "type": "nominal"},
+        "color": {"field": "Rating", "type": "nominal", "legend": null},
+        "size": {
+            "field": "Rating",
+            "aggregate": "count",
+            "legend": {"title": "No. of Records",
+                "clipHeight": 65},
+            "scale": {
+                "range": [0,4000]
+            }
+        }
+    }
+    
+};
+
+
+var vlSpec4 = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "title": "Food World Cup Visualization - Brushing & Linking Enabled",
+    "data": {
+        "url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"
+    },
+    "vconcat": [
+    {
+        "encoding": {
+            "color": {
+                "condition": {
+                    "title": "Legend",
+                    "field": "Rating",
+                    "scale": {
+                        "domain": ["","1.0","2.0","3.0","4.0","5.0"],
+                        "range": ["#A7BBEC", "#F92A82","#ED7B84","#F5DBCB","#D6D5B3","#7EB77F"]
+                    },
+                    "selection": "brush",
+                    "type": "nominal"
+                },
+                "value": "lightgray"
+            },
+            "x": {
+                "axis": {"title": "Country"},
+                "field": "Country",
+                "type": "ordinal"
+            },
+            "y": {
+                "aggregate": "count",
+                "type": "quantitative"
+            }
+        },
+        "width": 600,
+        "height": 300,
+        "mark": "bar",
+        "selection": {"brush": {"encodings": ["x"], "type": "interval"}},
+        "transform": [{"filter": {"selection": "click"}}]
+    },
+    {
+        "hconcat":[
+        {
+            "encoding": {
+                "color": {
+                    "condition": {
+                        "field": "Gender",
+                        "scale": {
+                            "domain": ["Male", "Female"],
+                            "range": [ "#F92A82", "#A7BBEC"]
+                        },
+                        "selection": "click",
+                        "type": "nominal"
+                    },
+                    "value": "lightgray"
+                },
+                "y": {"aggregate": "count", "type": "quantitative"},
+                "x": {"title": "Gender", "field": "Gender", "type": "nominal"}
+            },
+            "width": 167,
+            "height": 255,
+            "mark": "bar",
+            "selection": {"click": {"encodings": ["color"], "type": "multi"}},
+            "transform": [{"filter": {"selection": "brush"}}]
+        },
+        {
+            "encoding": {
+                "color": {
+                    "condition": {
+                        "field": "Household Income",
+                        "scale": {
+                            "domain": ["$0 - $24,999", "$25,000 - $49,999", "$50,000 - $99,999", "$100,000 - $149,999", "$150,000+"],
+                            "range": [ "#A7BBEC", "#F92A82","#ED7B84","#F5DBCB","#D6D5B3","#7EB77F"]
+                        },
+                        "selection": "click",
+                        "type": "nominal"
+                    },
+                    "value": "lightgray"
+                },
+                "y": {"aggregate": "count", "type": "quantitative"},
+                "x": {"title": "Household Income", "field": "Household Income", "type": "nominal"}
+            },
+            "width": 167,
+            "height": 200,
+            "mark": "bar",
+            "selection": {"click": {"encodings": ["color"], "type": "multi"}},
+            "transform": [{"filter": {"selection": "brush"}}]
+        },
+        {
+            "encoding": {
+                "color": {
+                    "condition": {
+                        "field": "Location",
+                        "scale": {
+                            "domain": ["East North Central", "East South Central", "Middle Atlantic", "Mountain", "New England", "Pacific", "South Atlantic", "West North Central", "West South Central"],
+                            "range": [ "#A7BBEC", "#F92A82","#ED7B84","#F5DBCB","#D6D5B3","#7EB77F", "#FFFD82", "#FF9B71", "#E84855"]
+                        },
+                        "selection": "click",
+                        "type": "nominal"
+                    },
+                    "value": "lightgray"
+                },
+                "y": {"aggregate": "count", "type": "quantitative"},
+                "x": {"title": "Location", "field": "Location", "type": "nominal"}
+            },
+            "width": 167,
+            "height": 200,
+            "mark": "bar",
+            "selection": {"click": {"encodings": ["color"], "type": "multi"}},
+            "transform": [{"filter": {"selection": "brush"}}]
+        }
+        ]
+    }
+    ]
+};
+
 // Embed the visualization in the container with id `vis`
-vegaEmbed('#vis', vlSpec);
+vegaEmbed('#vis1', vlSpec1);
 vegaEmbed('#vis2', vlSpec2);
+vegaEmbed('#vis3', vlSpec3);
+vegaEmbed('#vis4', vlSpec4);
+
 
 </script>
 </body>
