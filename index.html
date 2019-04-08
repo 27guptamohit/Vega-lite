@@ -20,6 +20,10 @@
 <!-- Container for the visualization -->
 <div id="vis1"></div>
 <div id="vis2"></div>
+<div id="vis3"></div>
+<div id="vis4"></div>
+
+
 
 <script>
 // Assign the specification to a local variable vlSpec.
@@ -29,7 +33,7 @@ var vlSpec1 = {
     "data": {
         "url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"
     },
-    "width": 1000,
+    "width": 500,
     "height": 500,
     "selection": {
         "1":{
@@ -121,6 +125,7 @@ var vlSpec2 = {
 
 
 var vlSpec3 = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
     "data": {"url": "https://raw.githubusercontent.com/27guptamohit/data/996a810dca9e4521b730b2de78f271acc4f17edf/food-world-cup/food-world-cup-data.csv"},
     "title" : "Bi-Variate: Circle",
     "height": 500,
