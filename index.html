@@ -27,9 +27,6 @@
 <script>
 // Assign the specification to a local variable vlSpec.
 
-var opt = {
-    "actions" : false
-  };
 
 var vlSpec1 = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
@@ -302,10 +299,10 @@ var vlSpec4 = {
 };
 
 // Embed the visualization in the container with id `vis`
-vegaEmbed('#vis1', vlSpec1);
-vegaEmbed('#vis2', vlSpec2);
-vegaEmbed('#vis3', vlSpec3);
-vegaEmbed('#vis4', vlSpec4);
+vegaEmbed('#vis1', vlSpec1, {'actions': false});
+vegaEmbed('#vis2', vlSpec2, {'actions': false});
+vegaEmbed('#vis3', vlSpec3, {'actions': false});
+vegaEmbed('#vis4', vlSpec4, {'actions': false});
 
 
 </script>
